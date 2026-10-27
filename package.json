@@ -1,0 +1,35 @@
+{
+  "name": "@flisk-sh/md2html",
+  "version": "0.1.0",
+  "description": "GitHub-flavored Markdown, including the HTML READMEs carry, to HTML that is safe to put in a page. markdown-it plus sanitize-html, configured and tested.",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "README.md", "LICENSE"],
+  "repository": { "type": "git", "url": "git+https://github.com/flisk-sh/md2html.git" },
+  "keywords": ["markdown", "html", "sanitize", "github", "readme", "gfm"],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "check:dist": "npm run build && git diff --exit-code -- dist"
+  },
+  "dependencies": {
+    "markdown-it": "^15.0.3",
+    "sanitize-html": "^2.18.1"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^14.2.0",
+    "@types/sanitize-html": "^2.16.2",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.9.0",
+    "vitest": "^3.2.0"
+  }
+}
