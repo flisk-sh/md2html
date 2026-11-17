@@ -194,6 +194,9 @@ function sanitizeOptions(linkBase: string | undefined, imageBase: string | undef
   };
 }
 
+const HTML_ENTITIES: Record<string, string> = { '&amp;': '&', '&lt;': '<', '&gt;': '>', '&quot;': '"', '&#39;': "'" };
+const textParser = createParser(false);
+
 const parsers = new Map<boolean, Parser>();
 
 /** Markdown (GitHub flavor, HTML allowed) to sanitized HTML. */
@@ -210,13 +213,9 @@ export function renderMarkdown(src: string, opts: RenderOptions = {}): string {
 
 /** Markdown to plain text (tags removed, entities decoded by the sanitizer), for summaries and search. */
 export function markdownToText(src: string): string {
-  const html = createParser(false).render(src ?? '');
+  const html = textParser.render(src ?? '');
   return sanitizeHtml(html, { allowedTags: [], allowedAttributes: {}, nonTextTags: ['script', 'style', 'textarea', 'option'] })
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
+    .replace(/&(?:amp|lt|gt|quot|#39);/g, (m) => HTML_ENTITIES[m] ?? m)
     .replace(/[ \t]+/g, ' ')
     .replace(/\n{3,}/g, '\n\n')
     .trim();
