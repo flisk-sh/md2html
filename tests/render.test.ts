@@ -109,4 +109,12 @@ describe('helpers', () => {
   it('markdownToText', () => {
     expect(markdownToText('# Title\n\nSome **bold** <b>html</b> & [a link](x.md).')).toBe('Title\nSome bold html & a link.');
   });
+
+  it('markdownToText decodes entities once, not twice', () => {
+    expect(markdownToText('Use &lt;div&gt;')).toBe('Use <div>');
+  });
+
+  it('markdownToText preserves escaped entities in source', () => {
+    expect(markdownToText('Use &amp;lt;div&amp;gt; in HTML')).toBe('Use &lt;div&gt; in HTML');
+  });
 });
