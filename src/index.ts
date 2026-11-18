@@ -211,12 +211,9 @@ export function renderMarkdown(src: string, opts: RenderOptions = {}): string {
 /** Markdown to plain text (tags removed, entities decoded by the sanitizer), for summaries and search. */
 export function markdownToText(src: string): string {
   const html = createParser(false).render(src ?? '');
+  const entities: Record<string, string> = { '&amp;': '&', '&lt;': '<', '&gt;': '>', '&quot;': '"', '&#39;': "'" };
   return sanitizeHtml(html, { allowedTags: [], allowedAttributes: {}, nonTextTags: ['script', 'style', 'textarea', 'option'] })
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
+    .replace(/&(?:amp|lt|gt|quot|#39);/g, (m) => entities[m])
     .replace(/[ \t]+/g, ' ')
     .replace(/\n{3,}/g, '\n\n')
     .trim();
