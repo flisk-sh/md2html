@@ -90,6 +90,14 @@ describe('safety', () => {
   it('keeps the text of tags it removes, but not of scripts', () => {
     expect(renderMarkdown('<marquee>hello</marquee> <script>bad()</script>')).toBe('<p>hello </p>\n');
   });
+
+  it('drops href but keeps text for a disallowed tel: scheme', () => {
+    expect(renderMarkdown('<a href="tel:+15550100">Call us</a>')).toBe('<p><a>Call us</a></p>\n');
+  });
+
+  it('keeps the href for the allowed mailto: scheme', () => {
+    expect(renderMarkdown('<a href="mailto:a@b.c">Mail</a>')).toContain('href="mailto:a@b.c"');
+  });
 });
 
 describe('helpers', () => {

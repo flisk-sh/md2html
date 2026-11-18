@@ -12,7 +12,7 @@ It is not a new parser. It is [markdown-it](https://github.com/markdown-it/markd
 
 - **GitHub flavor:** tables (with `align`), strikethrough, autolinks, task lists, heading ids like GitHub's (`#getting-started`, `#getting-started-1`), and alerts (`> [!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`).
 - **README HTML:** `<p align="center">`, `<picture>` and `<source>`, badges, `<details>`, `<sub>`, `<kbd>` and tables written in HTML render as HTML, not as escaped text.
-- **Safe:** an allowlist of tags and attributes; no scripts, styles, frames, forms, event handlers or `javascript:`/`data:` URLs; protocol-relative URLs dropped; external links get `target="_blank" rel="noopener noreferrer"`.
+- **Safe:** an allowlist of tags and attributes; no scripts, styles, frames, forms, event handlers or `javascript:`/`data:` URLs; protocol-relative URLs dropped; external links get `target="_blank" rel="noopener noreferrer"`. Allowed link schemes are `http`, `https` and `mailto` (images and `<source>` allow only `http` and `https`). Other schemes such as `tel:` keep the link text but lose their `href`.
 - **Repository-aware URLs:** with `baseUrl` set to a file on GitHub, relative links resolve to that file's folder and relative images to `raw.githubusercontent.com`.
 
 ## API
@@ -27,7 +27,14 @@ It is not a new parser. It is [markdown-it](https://github.com/markdown-it/markd
 
 ## Install
 
-From GitHub, pinned to a tag:
+From the npm registry (first choice for npm, pnpm, bun or lockfile-only CI):
+
+```bash
+npm i @flisk-sh/md2html
+# or: bun add @flisk-sh/md2html
+```
+
+From GitHub, pinned to a tag (alternative; needs git access at install time):
 
 ```bash
 bun add github:flisk-sh/md2html#v0.1.0
