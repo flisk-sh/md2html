@@ -108,5 +108,8 @@ describe('helpers', () => {
 
   it('markdownToText', () => {
     expect(markdownToText('# Title\n\nSome **bold** <b>html</b> & [a link](x.md).')).toBe('Title\nSome bold html & a link.');
+    expect(markdownToText('Use &amp;lt;div&amp;gt;')).toBe('Use &lt;div&gt;');
+    expect(markdownToText('a & b <c>')).toBe('a & b');
   });
+
 });
