@@ -4,6 +4,10 @@
   "description": "GitHub-flavored Markdown, including the HTML READMEs carry, to HTML that is safe to put in a page. markdown-it plus sanitize-html, configured and tested.",
   "license": "MIT",
   "type": "module",
+  "homepage": "https://github.com/flisk-sh/md2html#readme",
+  "bugs": { "url": "https://github.com/flisk-sh/md2html/issues" },
+  "engines": { "node": ">=18" },
+  "sideEffects": false,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
