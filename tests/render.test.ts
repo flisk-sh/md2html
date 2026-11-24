@@ -10,6 +10,15 @@ describe('GitHub-flavored Markdown', () => {
     );
   });
 
+  it('keeps generated and literal heading IDs from colliding', () => {
+    const ids = (headings: string[]) => Array.from(
+      renderMarkdown(headings.map((heading) => `## ${heading}`).join('\n\n')).matchAll(/id="([^"]+)"/g),
+      (match) => match[1],
+    );
+    expect(ids(['Setup', 'Setup-1', 'Setup', 'Setup'])).toEqual(['setup', 'setup-1', 'setup-2', 'setup-3']);
+    expect(ids(['Setup', 'Setup', 'Setup-1'])).toEqual(['setup', 'setup-1', 'setup-1-1']);
+  });
+
   it('renders tables, strikethrough, code with its language, and autolinks', () => {
     const html = renderMarkdown('| A | B |\n|:--|--:|\n| 1 | 2 |\n\n~~old~~ https://flisk.sh\n\n```ts\nconst a = 1 < 2;\n```');
     expect(html).toContain('<th align="left">A</th>');
