@@ -64,16 +64,17 @@ function createParser(headingIds) {
             // GitHub alerts: a blockquote whose first line is [!NOTE], [!TIP], [!IMPORTANT], [!WARNING] or [!CAUTION].
             if (t.type === 'blockquote_open' && tokens[i + 1]?.type === 'paragraph_open' && tokens[i + 2]?.type === 'inline') {
                 const inline = tokens[i + 2];
-                const m = /^\[!(note|tip|important|warning|caution)\]\s*/i.exec(inline.content);
+                const m = /^\[!(note|tip|important|warning|caution)\][ \t]*(?:\n|$)/i.exec(inline.content);
                 if (m) {
                     const kind = m[1].toLowerCase();
                     t.attrSet('class', `alert alert-${kind}`);
                     const first = inline.children?.[0];
                     if (first?.type === 'text')
                         first.content = first.content.replace(/^\[!\w+\]\s*/, '');
-                    // Drop the soft break that followed the marker line.
-                    if (inline.children?.[1]?.type === 'softbreak' && !inline.children[0].content)
-                        inline.children.splice(0, 2);
+                    // Trailing spaces can turn the marker's line ending into a hard break.
+                    const breakType = inline.children?.[1]?.type;
+                    if ((breakType === 'softbreak' || breakType === 'hardbreak') && !first?.content)
+                        inline.children?.splice(0, 2);
                     const label = new state.Token('html_inline', '', 0);
                     label.content = `<strong>${kind.charAt(0).toUpperCase() + kind.slice(1)}</strong> `;
                     inline.children?.unshift(label);
