@@ -77,9 +77,12 @@ function createParser(headingIds: boolean): Parser {
           .map((c) => c.content)
           .join('');
         const base = slug(text) || 'section';
-        const n = used.get(base) ?? 0;
-        used.set(base, n + 1);
-        t.attrSet('id', n === 0 ? base : `${base}-${n}`);
+        let id = base;
+        let n = used.get(base) ?? 0;
+        while (used.has(id)) id = `${base}-${++n}`;
+        used.set(base, n);
+        used.set(id, 0);
+        t.attrSet('id', id);
       }
 
       // GitHub alerts: a blockquote whose first line is [!NOTE], [!TIP], [!IMPORTANT], [!WARNING] or [!CAUTION].
