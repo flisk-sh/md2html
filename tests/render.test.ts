@@ -30,6 +30,18 @@ describe('GitHub-flavored Markdown', () => {
       '<blockquote class="alert alert-warning">\n<p><strong>Warning</strong> Back up first.</p>\n</blockquote>\n',
     );
   });
+
+  it('keeps a marker followed by text on the same line as an ordinary quote', () => {
+    expect(renderMarkdown('> [!NOTE] is the syntax for a note.')).toBe(
+      '<blockquote>\n<p>[!NOTE] is the syntax for a note.</p>\n</blockquote>\n',
+    );
+  });
+
+  it('renders an alert when its marker line ends in trailing spaces', () => {
+    expect(renderMarkdown('> [!TIP]  \n> Save a copy.')).toBe(
+      '<blockquote class="alert alert-tip">\n<p><strong>Tip</strong> Save a copy.</p>\n</blockquote>\n',
+    );
+  });
 });
 
 describe('README HTML', () => {
